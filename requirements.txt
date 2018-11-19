@@ -1,2 +1,4 @@
 Flask==1.0.2
 pylightning==0.0.4
+uWSGI==2.0.17.1
+requests==2.20.1
