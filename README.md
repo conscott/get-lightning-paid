@@ -10,6 +10,7 @@ The app requires a locally running version of [c-lightning](https://github.com/E
 
 ### Install Environment
 ```
+sudo apt-get install python3-dev
 python3 -v venv venv
 source venv/bin/activate
 pip install -r requirements.txt
