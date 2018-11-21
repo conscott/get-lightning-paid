@@ -69,7 +69,7 @@ def check_invoice(label):
         data = ld.listinvoices(label)['invoices'][0]
         status = data['status']
         expires = data['expires_at']
-        return jsonify({"status": status})
+        return jsonify({"status": status, "expires_at": expires})
     except IndexError:
         return jsonify({"error": "label does not exist"})
 
