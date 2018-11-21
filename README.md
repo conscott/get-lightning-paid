@@ -1,6 +1,6 @@
 ## Description
 
-A simple Flask REST API to generate lightning invoices and wait for payment confirmation / check invoice status.
+A simple Flask REST API to generate lightning invoices and wait for payment confirmation / check invoice status. This is experimential fun and not enterprise ready. *Use with caution!*
 
 ### Files
 * API implementation in [app.py](./app.py) 
