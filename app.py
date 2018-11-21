@@ -83,12 +83,6 @@ def wait_for_invoice(label):
     return jsonify(ld.waitinvoice(label))
 
 
-# List all invoices
-@app.route('/api/list_invoices', methods=['GET'])
-def list_invoices():
-    return jsonify(ld.listinvoices())
-
-
 # Get node info
 @app.route('/api/getinfo')
 def getinfo():
