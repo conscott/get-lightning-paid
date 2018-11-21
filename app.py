@@ -60,13 +60,15 @@ def make_invoice():
 # Response
 # {
 #     "status": "paid|unpaid|expired"
+#     "expires_at": <unix_timestamp>
 # }
 #
 @app.route('/api/check_invoice/<label>', methods=['GET'])
 def check_invoice(label):
     try:
-        status = ld.listinvoices(label)['invoices'][0]['status']
-        print("Status: %s" % status)
+        data = ld.listinvoices(label)['invoices'][0]
+        status = data['status']
+        expires = data['expires_at']
         return jsonify({"status": status})
     except IndexError:
         return jsonify({"error": "label does not exist"})
@@ -114,11 +116,11 @@ def test_invoice():
 
 # Check on fake invoice
 #
-# endpoint will just waits 5 seconds and return
+# endpoint will just waits 15 seconds and return
 @app.route("/test/check_invoice/<label>", methods=['GET'])
 def check_fake_invoice(label):
     import time
-    time.sleep(5)
+    time.sleep(15)
     return jsonify({'status': 'paid'})
 
 
