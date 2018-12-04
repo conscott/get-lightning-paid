@@ -49,10 +49,13 @@ def make_invoice():
     description = data.get('description', '')
     expiry = data.get('expiry', 600)
     label = label_generator()
-    invoice = ld.invoice(amount, label, description, expiry)
-    # Add label so you can check status through API
-    invoice['label'] = label
-    return jsonify(invoice)
+    try:
+        invoice = ld.invoice(amount, label, description, expiry)
+        # Add label so you can check status through API
+        invoice['label'] = label
+        return jsonify(invoice)
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 # Check payment status of invoice with <label>
@@ -80,7 +83,10 @@ def check_invoice(label):
 #
 @app.route('/api/wait_invoice/<label>', methods=['GET'])
 def wait_for_invoice(label):
-    return jsonify(ld.waitinvoice(label))
+    try:
+        return jsonify(ld.waitinvoice(label))
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 # Get node info
@@ -110,13 +116,9 @@ def test_invoice():
 
 # Check on fake invoice
 #
-# endpoint will just waits 15 seconds and return
+# endpoint will just waits 5 seconds and return
 @app.route("/test/check_invoice/<label>", methods=['GET'])
 def check_fake_invoice(label):
     import time
-    time.sleep(15)
+    time.sleep(5)
     return jsonify({'status': 'paid'})
-
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
