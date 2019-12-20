@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from lightning import LightningRpc
 import os
+import sys
 import random
+
 
 # Setup flask app object
 app = Flask(__name__)
@@ -12,11 +14,24 @@ CORS(app)
 def default_configdir():
     home = os.getenv("HOME")
     if home:
-        return os.path.join(home, ".lightning")
+        base = os.path.join(home, ".lightning")
+        testnet = os.path.join(base, "testnet")
+        mainnet = os.path.join(base, "bitcoin")
+        if os.path.isdir(mainnet):
+            return mainnet
+        elif os.path.isdir(testnet):
+            return testnet
+        elif os.path.isdir(base):
+            return base
     return "."
 
 # Setup lightning rpc wrapper
 rpc_path = os.path.join(default_configdir(), "lightning-rpc")
+if not os.path.exists(rpc_path):
+    print("Could not find the lightning-rpc path %s" % rpc_path)
+    sys.exit(0)
+
+print("Using lightning-rpc path %s" % rpc_path)
 ld = LightningRpc(rpc_path)
 
 
